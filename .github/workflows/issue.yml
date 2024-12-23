@@ -1,79 +1,38 @@
-name: "Bug Report" # The name of the issue type
+name: "Create GitHub Issue"
 on:
-push:
-workflow_dispatch:
-description: "Report a bug to help us improve." # A short description of the issue type
-title: "[BUG] <Short description of the issue>" # Default title format
-labels: ["bug", "needs-triage"] # Labels automatically assigned to the issue
-assignees: [] # Optional: default assignees for the issue
+  workflow_dispatch: # Allows manual trigger of the workflow
 
-body:
-  - type: markdown
-    attributes:
-      value: |
-        Thank you for taking the time to report a bug. Please fill out the information below so we can better assist you.
+jobs:
+  create_issue:
+    runs-on: ubuntu-latest
 
-  - type: input
-    id: bug_description
-    attributes:
-      label: "Bug Description"
-      description: "Provide a clear and concise description of the issue."
-      placeholder: "What happened? Include as many details as possible."
-    validations:
-      required: true
+    steps:
+    - name: Create Issue
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const issueTitle = "Automated Issue Title";
+          const issueBody = `
+          ## Description
+          This is an automated issue created by a workflow.
 
-  - type: textarea
-    id: reproduction_steps
-    attributes:
-      label: "Steps to Reproduce"
-      description: "List the steps to reproduce the bug."
-      placeholder: |
-        1. Go to '...'
-        2. Click on '...'
-        3. Scroll down to '...'
-        4. See error
-    validations:
-      required: true
+          ### Steps to Reproduce:
+          1. Step 1
+          2. Step 2
 
-  - type: input
-    id: expected_behavior
-    attributes:
-      label: "Expected Behavior"
-      description: "Describe what you expected to happen."
-      placeholder: "What should have happened instead?"
-    validations:
-      required: true
+          ### Expected Behavior:
+          Describe what you expect to happen.
 
-  - type: input
-    id: actual_behavior
-    attributes:
-      label: "Actual Behavior"
-      description: "Describe what actually happened."
-      placeholder: "What actually happened?"
-    validations:
-      required: true
+          ### Actual Behavior:
+          Describe what actually happened.
+          `;
 
-  - type: dropdown
-    id: priority
-    attributes:
-      label: "Priority"
-      description: "How critical is this issue?"
-      options:
-        - "Low"
-        - "Medium"
-        - "High"
-      default: "Medium"
+          const response = await github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: issueTitle,
+            body: issueBody,
+            labels: ["bug", "automation"]
+          });
 
-  - type: input
-    id: environment
-    attributes:
-      label: "Environment"
-      description: "Provide information about the environment where the bug occurred."
-      placeholder: "OS, browser, tool versions, etc."
-
-  - type: textarea
-    id: additional_context
-    attributes:
-      label: "Additional Context"
-      description: "Add any other details about the problem here."
-      placeholder: "Logs, screenshots, or any other useful context."
+          console.log(`Created issue: ${response.data.html_url}`);
