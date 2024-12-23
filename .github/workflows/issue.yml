@@ -1,64 +1,79 @@
-name: Bug Report
-description: File a bug report.
-title: "[Bug]: "
-labels: ["bug", "triage"]
-projects: ["octo-org/1", "octo-org/44"]
-assignees:
-  - octocat
+name: "Bug Report" # The name of the issue type
+on:
+push:
+workflow_dispatch:
+description: "Report a bug to help us improve." # A short description of the issue type
+title: "[BUG] <Short description of the issue>" # Default title format
+labels: ["bug", "needs-triage"] # Labels automatically assigned to the issue
+assignees: [] # Optional: default assignees for the issue
+
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report!
+        Thank you for taking the time to report a bug. Please fill out the information below so we can better assist you.
+
   - type: input
-    id: contact
+    id: bug_description
     attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info?
-      placeholder: ex. email@example.com
-    validations:
-      required: false
-  - type: textarea
-    id: what-happened
-    attributes:
-      label: What happened?
-      description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened!"
+      label: "Bug Description"
+      description: "Provide a clear and concise description of the issue."
+      placeholder: "What happened? Include as many details as possible."
     validations:
       required: true
-  - type: dropdown
-    id: version
+
+  - type: textarea
+    id: reproduction_steps
     attributes:
-      label: Version
-      description: What version of our software are you running?
-      options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
-      default: 0
+      label: "Steps to Reproduce"
+      description: "List the steps to reproduce the bug."
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
     validations:
       required: true
+
+  - type: input
+    id: expected_behavior
+    attributes:
+      label: "Expected Behavior"
+      description: "Describe what you expected to happen."
+      placeholder: "What should have happened instead?"
+    validations:
+      required: true
+
+  - type: input
+    id: actual_behavior
+    attributes:
+      label: "Actual Behavior"
+      description: "Describe what actually happened."
+      placeholder: "What actually happened?"
+    validations:
+      required: true
+
   - type: dropdown
-    id: browsers
+    id: priority
     attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: true
+      label: "Priority"
+      description: "How critical is this issue?"
       options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
+        - "Low"
+        - "Medium"
+        - "High"
+      default: "Medium"
+
+  - type: input
+    id: environment
+    attributes:
+      label: "Environment"
+      description: "Provide information about the environment where the bug occurred."
+      placeholder: "OS, browser, tool versions, etc."
+
   - type: textarea
-    id: logs
+    id: additional_context
     attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com). 
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
+      label: "Additional Context"
+      description: "Add any other details about the problem here."
+      placeholder: "Logs, screenshots, or any other useful context."
