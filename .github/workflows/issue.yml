@@ -1,38 +1,15 @@
-name: "Create GitHub Issue"
+name: Test Issue 
 on:
-  workflow_dispatch: # Allows manual trigger of the workflow
+  issues:
+    types:
+    - opened
 
-jobs:
-  create_issue:
-    runs-on: ubuntu-latest
+    jobs:
+      test-job:
+        runs-on: ubuntu-latest
 
-    steps:
-    - name: Create Issue
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const issueTitle = "Automated Issue Title";
-          const issueBody = `
-          ## Description
-          This is an automated issue created by a workflow.
-
-          ### Steps to Reproduce:
-          1. Step 1
-          2. Step 2
-
-          ### Expected Behavior:
-          Describe what you expect to happen.
-
-          ### Actual Behavior:
-          Describe what actually happened.
-          `;
-
-          const response = await github.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: issueTitle,
-            body: issueBody,
-            labels: ["bug", "automation"]
-          });
-
-          console.log(`Created issue: ${response.data.html_url}`);
+        steps:
+        -name: Print Issue Detected
+        run: echo "New Issue Detected"
+    
+ 
