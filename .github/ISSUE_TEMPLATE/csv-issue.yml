@@ -6,13 +6,13 @@ body:
 - type: textarea
   attributes:
     label: Current Behavior
-    description: Unreadable content in .csv format
+    description: Explain
   validations:
     required: false
 - type: textarea
   attributes:
     label: Expected Behavior
-    description: Smooth download and readable content.
+    description: Explain
   validations:
     required: false
 - type: textarea
